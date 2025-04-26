@@ -56,27 +56,25 @@ class SudokuGenerator:
             self.fill_box(i, i)
 
     def fill_remaining(self, i=0, j=0):
-        # If we reach the end of the board, return True.
-        if i >= self.row_length and j >= self.row_length:
+        # If we reach the end of the board, stop
+        if i == self.row_length - 1 and j == self.row_length:
             return True
-
-        # Move to the next row if the current column is finished.
-        if j >= self.row_length:
+        if j == self.row_length:
             i += 1
             j = 0
+        if i >= self.row_length:
+            return True
 
-        # If the cell is already filled, skip to next cell.
         if self.board[i][j] != 0:
             return self.fill_remaining(i, j + 1)
 
-        # Try each number from 1 to 9 and check if it is valid.
         for num in range(1, self.row_length + 1):
             if self.is_valid(i, j, num):
                 self.board[i][j] = num
                 if self.fill_remaining(i, j + 1):
                     return True
-                # if placing num didn’t lead to a solution then reset the cell.
-                self.board[i][j] = 0
+                self.board[i][j] = 0  # Undo if it didn't lead to solution
+
         return False
 
     def fill_values(self):
