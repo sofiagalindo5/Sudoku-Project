@@ -1,6 +1,5 @@
 import pygame
 
-
 class Cell:
    def __init__(self, value, row, col, screen):
        self.value = value
@@ -10,10 +9,8 @@ class Cell:
        self.screen = screen
        self.selected = False
 
-
    def set_cell_value(self, value):
        self.value = value
-
 
    def set_sketched_value(self, value):
        self.sketched_value = value
@@ -25,14 +22,11 @@ class Cell:
        CROSS_COLOR = (66, 66, 66)
        RED = (255, 0, 0)
 
-
        x = self.col * SQUARE_SIZE
        y = self.row * SQUARE_SIZE
 
-
        pygame.draw.rect(self.screen, BG_COLOR, (x, y, SQUARE_SIZE, SQUARE_SIZE))
        pygame.draw.rect(self.screen, LINE_COLOR, (x, y, SQUARE_SIZE, SQUARE_SIZE), 1)
-
 
        font = pygame.font.SysFont("Arial", 40)
        if self.value != 0:
@@ -43,6 +37,11 @@ class Cell:
            text = sketched_font.render(str(self.sketched_value), True, (0, 0, 0))
            self.screen.blit(text, (x + 5, y + 5))
 
-
        if self.selected:
            pygame.draw.rect(self.screen, RED, (x, y, SQUARE_SIZE, SQUARE_SIZE), 3)
+
+   def select(self):
+      self.selected = True
+
+   def deselect(self):
+      self.selected = False
