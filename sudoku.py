@@ -118,3 +118,79 @@ def lose_screen():
 
        restart_button.draw(screen)
        pygame.display.update()
+
+def game_loop(difficulty):
+   board = Board(BOARD_WIDTH, BOARD_HEIGHT, screen, difficulty)
+
+
+   reset_button = Button("Reset", 50, 620, 150, 50)
+   restart_button = Button("Restart", 225, 620, 150, 50)
+   exit_button = Button("Exit", 400, 620, 150, 50)
+
+
+   running = True
+   while running:
+       screen.fill((255, 255, 255))
+       board.draw()
+       reset_button.draw(screen)
+       restart_button.draw(screen)
+       exit_button.draw(screen)
+
+
+       for event in pygame.event.get():
+           if event.type == pygame.QUIT:
+               pygame.quit()
+               sys.exit()
+
+
+           if event.type == pygame.MOUSEBUTTONDOWN:
+               pos = pygame.mouse.get_pos()
+               if pos[1] < 600:
+                   clicked = board.click(pos[0], pos[1])
+                   if clicked:
+                       board.select(clicked[0], clicked[1])
+               if reset_button.is_clicked(event):
+                   board.reset_to_original()
+               if restart_button.is_clicked(event):
+                   main_menu()
+               if exit_button.is_clicked(event):
+                   pygame.quit()
+                   sys.exit()
+
+
+           if event.type == pygame.KEYDOWN:
+               if board.selected_cell:
+                   row, col = board.selected_cell
+                   if event.key == pygame.K_1:
+                       board.sketch(1)
+                   if event.key == pygame.K_2:
+                       board.sketch(2)
+                   if event.key == pygame.K_3:
+                       board.sketch(3)
+                   if event.key == pygame.K_4:
+                       board.sketch(4)
+                   if event.key == pygame.K_5:
+                       board.sketch(5)
+                   if event.key == pygame.K_6:
+                       board.sketch(6)
+                   if event.key == pygame.K_7:
+                       board.sketch(7)
+                   if event.key == pygame.K_8:
+                       board.sketch(8)
+                   if event.key == pygame.K_9:
+                       board.sketch(9)
+                   if event.key == pygame.K_RETURN:
+                       board.place_number(board.cells[row][col].sketched_value)
+       board.update_board()
+       if board.is_full():
+           if board.check_board():
+               win_screen()
+           else:
+               lose_screen()
+
+
+       pygame.display.update()
+
+
+if __name__ == "__main__":
+   main_menu()
