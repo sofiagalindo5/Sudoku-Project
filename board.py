@@ -30,3 +30,37 @@ class Board:
 
        self.selected_cell = None
        self.original_board = [row[:] for row in self.board]
+
+   def get_removed_cells(self, difficulty):
+      if difficulty == "easy":
+         return 30
+      elif difficulty == "medium":
+         return 40
+      elif difficulty == "hard":
+         return 50
+      else:
+         return 30
+
+   def draw(self):
+       for row in self.cells:
+           for cell in row:
+               cell.draw()
+
+       for i in range(BOARD_ROWS + 1):
+           thickness = 6 if i % 3 == 0 else 1
+           pygame.draw.line(self.screen, (0, 0, 0), (0, i * SQUARE_SIZE), (WIDTH, i * SQUARE_SIZE), thickness)
+           pygame.draw.line(self.screen, (0, 0, 0), (i * SQUARE_SIZE, 0), (i * SQUARE_SIZE, HEIGHT), thickness)
+
+   def select(self, row, col):
+       for r in self.cells:
+           for cell in r:
+               cell.deselect()
+       self.cells[row][col].select()
+       self.selected_cell = (row, col)
+
+   def click(self, x, y):
+       if x < WIDTH and y < HEIGHT:
+           row = int(y // SQUARE_SIZE)
+           col = int(x // SQUARE_SIZE)
+           return (row, col)
+       return None
